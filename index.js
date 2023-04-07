@@ -5,11 +5,15 @@ const myObj = {
   1: 'b',
   2: 'c',
 };
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Objects & Array Functions
+function checkInput(collection) {
+  return Array.isArray(collection) ? collection : Object.values(collection);
+}
 
 function myEach(collection, callback) {
-  const values = Array.isArray(collection) ? collection : Object.values(collection);
+  const values = checkInput(collection);
   for (let i = 0; i < values.length; i++) {
     callback(values[i], i, collection);
   }
@@ -17,7 +21,7 @@ function myEach(collection, callback) {
 }
 
 function myMap(collection, callback) {
-  const values = Array.isArray(collection) ? collection : Object.values(collection);
+  const values = checkInput(collection);
   const newArr = [];
   for (let i = 0; i < values.length; i++) {
     newArr.push(callback(values[i], i, values));
@@ -31,7 +35,7 @@ const doubledNums = myMap(myArrayNums, (num) => {
 // console.log(doubledNums);
 
 function myReduce(collection, callback, acc) {
-  const values = Array.isArray(collection) ? collection : Object.values(collection);
+  const values = checkInput(collection);
   let startIndex = acc !== undefined ? 0 : 1;
   let accumulator = acc !== undefined ? acc : values[0];
   for (let i = startIndex; i < values.length; i++) {
@@ -50,7 +54,7 @@ let sum = myReduce(
 // console.log(sum);
 
 function myFind(collection, callback) {
-  const values = Array.isArray(collection) ? collection : Object.values(collection);
+  const values = checkInput(collection);
   for (let i = 0; i < values.length; i++) {
     if (callback(values[i], i, collection)) {
       return values[i];
@@ -65,7 +69,7 @@ const findTest = myFind(myArrayNums, (value) => {
 // console.log(findTest);
 
 function myFilter(collection, callback) {
-  const values = Array.isArray(collection) ? collection : Object.values(collection);
+  const values = checkInput(collection);
   const filteredArr = [];
   for (let i = 0; i < values.length; i++) {
     if (callback(values[i], i, collection)) {
@@ -79,7 +83,7 @@ const filterTest = myFilter(myArrayNums, (value) => value % 2 === 0);
 // console.log(filterTest);
 
 function mySize(collection) {
-  const values = Array.isArray(collection) ? collection : Object.values(collection);
+  const values = checkInput(collection);
   return values.length;
 }
 // console.log(mySize({ one: 1, two: 2, three: 3 }));
@@ -100,8 +104,8 @@ function myLast(arr, n) {
 // myLast([5, 4, 3, 2, 1]); // => 1
 // myLast([5, 4, 3, 2, 1], 3); //=> [3, 2, 1]
 
-function mySortBy(collection, callback) {
-  const newArr = collection.slice();
+function mySortBy(arr, callback) {
+  const newArr = arr.slice();
 
   newArr.sort((a, b) => {
     const aTransformed = callback(a);
@@ -127,6 +131,7 @@ const stooges = [
   { name: 'larry', age: 50 },
   { name: 'curly', age: 60 },
 ];
+// adding negative -stooge.age to sort reveresly 
 // console.log(
 //   mySortBy(stooges, function (stooge) {
 //     return -stooge.age;
